@@ -1,24 +1,23 @@
-const Todo = require('../models/Availability')
+const Availability = require('../models/Availability')
 
 module.exports = {
     getAvailability: async (req,res)=>{
         console.log(req.user)
         try{
-            // const todoItems = await Availability.find({userId:req.user.id})
-            // const itemsLeft = await Availability.countDocuments({userId:req.user.id,available: true})
-            res.render('availability.ejs')
+            const meetings = await Availability.find().sort({ date: 1})
+            res.render('availability.ejs', {teamSched: meetings})
         }catch(err){
             console.log(err)
         }
     },
     createMeeting: async (req, res)=>{
-        // try{
-        //     await Todo.create({todo: req.body.todoItem, completed: false, userId: req.user.id})
-        //     console.log('Todo has been added!')
-        //     res.redirect('/todos')
-        // }catch(err){
-        //     console.log(err)
-        // }
+        try{
+            await Availability.create({date: req.body.date, timeStart: req.body.timeStart, timeEnd: req.body.timeEnd, description: req.body.description, userID: req.user._id, userName: req.user.userName})
+            console.log('Your meeting has been added!')
+            res.redirect('/availability')
+        }catch(err){
+            console.log(err)
+        }
     },
     deleteMeeting: async (req, res)=>{
         // try{

@@ -143,6 +143,8 @@ var month = [
     row++;
     }
     });
+
+    //every table element clicked calls dateClickHandler
     $("td.selectable").click(function () {
     dateClickHandler($(this));
     });
@@ -156,49 +158,66 @@ var month = [
    });
     
    function dateClickHandler(elem) {
-    
-    var day1 = parseInt($(elem).html());
-    if (clickCounter === 0) {
-    $("td.selectable").each(function () {
-    $(this).removeClass("active between hover");
-    });
-    }
-    clickCounter++;
-    if (clickCounter === 2) {
-    $("td.selectable").each(function () {
-    $(this).unbind('mouseenter').unbind('mouseleave');
-    });
-    clickCounter = 0;
-    return;
-    }
-    $(elem).toggleClass("active");
-    $("td.selectable").hover(function () {
-    
-    var day2 = parseInt($(this).html());
-    $(this).addClass("hover");
-    $("td.selectable").each(function () {
-    $(this).removeClass("between");
-    
-    });
-    if (day1 > day2 + 1) {
-    $("td.selectable").each(function () {
-    var dayBetween = parseInt($(this).html());
-    if (dayBetween > day2 && dayBetween < day1) {
-    $(this).addClass("between");
-    }
-    });
-    } else if (day1 < day2 + 1) {
-    $("td.selectable").each(function () {
-    var dayBetween = parseInt($(this).html());
-    if (dayBetween > day1 && dayBetween < day2) {
-    $(this).addClass("between");
-    }
-    });
-    }
-    }, function () {
-    $(this).removeClass("hover");
-    });
+     let pick1;
+     let pick2;
+        var day1 = parseInt($(elem).html());
+        //submit availability request here
+        pick1 = day1
+        console.log(`pick1 is ${pick1}`)
+
+        //first date
+        if (clickCounter === 0) {
+          $("td.selectable").each(function () {
+               $(this).removeClass("active between hover");
+          });
+        }
+        clickCounter++;
+        
+        //second date
+        if (clickCounter === 2) {
+          $("td.selectable").each(function () {
+               $(this).unbind('mouseenter').unbind('mouseleave');
+          });
+          clickCounter = 0;
+          return;
+        }
+        $(elem).toggleClass("active");
+
+        //style when hovering
+        $("td.selectable").hover(function () {
+        
+          var day2 = parseInt($(this).html());
+          //submit availability date range
+          pick2 = [day1,day2]
+          console.log(`picks one and two ${pick2}`)
+          
+          $(this).addClass("hover");
+          $("td.selectable").each(function () {
+          $(this).removeClass("between");
+          
+          });
+          if (day1 > day2 + 1) {
+               $("td.selectable").each(function () {
+               var dayBetween = parseInt($(this).html());
+               if (dayBetween > day2 && dayBetween < day1) {
+                    $(this).addClass("between");
+               }
+               });
+          } else if (day1 < day2 + 1) {
+               $("td.selectable").each(function () {
+               var dayBetween = parseInt($(this).html());
+               if (dayBetween > day1 && dayBetween < day2) {
+                    $(this).addClass("between");
+               }
+               });
+          }
+        }, function () {
+          $(this).removeClass("hover");
+        });
+        console.log([pick1, pick2])
    }
+
+   //Month change buttons
    $(".fa-angle-left").click(function () {
     getPrevMonth();
     $(".main").addClass("is-rotated-left");

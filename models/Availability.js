@@ -1,15 +1,28 @@
+const { Timestamp } = require('mongodb')
 const mongoose = require('mongoose')
 
 const AvailabilitySchema = new mongoose.Schema({
-  todo: {
+  date: {
+    type: Date,
+    required: true,
+  },
+  timeStart: {
     type: String,
     required: true,
   },
-  completed: {
-    type: Boolean,
+  timeEnd: {
+    type: String,
     required: true,
   },
-  userId: {
+  description: {
+    type: String,
+    required: true,
+  },
+  userID: {
+    type: String,
+    required: true
+  },
+  userName: {
     type: String,
     required: true
   }
